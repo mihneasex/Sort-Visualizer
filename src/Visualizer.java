@@ -21,9 +21,10 @@ public class Visualizer extends JPanel implements ActionListener
 	JButton bs = new JButton("Bubble Sort");
 	JButton qs = new JButton("Quick Sort");
 	JButton ss = new JButton("Selection Sort");
+	JButton is = new JButton("Insertion Sort");
 
-	JButton incSpeed = new JButton("Increase Sleep");
-	JButton decSpeed = new JButton("Decrease Sleep");
+	JButton incSpeed = new JButton("Decrease Sleep");
+	JButton decSpeed = new JButton("Increase Sleep");
 	
 	JLabel SleepLabel = new JLabel(String.valueOf(Sleep));
 	
@@ -44,6 +45,9 @@ public class Visualizer extends JPanel implements ActionListener
 		
 		ss.setBounds(0, 0, 100, 100);
 		ss.addActionListener(this);
+
+		is.setBounds(0, 0, 100, 100);
+		is.addActionListener(this);
 		
 		incSpeed.setBounds(0, 0, 100, 100);
 		incSpeed.addActionListener(this);
@@ -56,6 +60,7 @@ public class Visualizer extends JPanel implements ActionListener
 		this.add(bs);
 		this.add(qs);
 		this.add(ss);
+		this.add(is);
 
 		this.add(incSpeed);
 		this.add(decSpeed);
@@ -88,6 +93,15 @@ public class Visualizer extends JPanel implements ActionListener
 			if (isSorted())
 			{
 				SelectionSort();
+				Shuffle();
+			}
+		}
+		
+		else if(e.getSource() == is) 
+		{
+			if (isSorted())
+			{
+				InsertionSort();
 				Shuffle();
 			}
 		}
@@ -305,6 +319,40 @@ public class Visualizer extends JPanel implements ActionListener
 					Array[min] = Array[i];  
 					Array[i] = temp;  
 				}
+				
+				Left = -1;
+				Right = -1;
+				Pivot = -1;
+				
+				return null;
+			}
+		};
+	}
+	
+	public void InsertionSort()
+	{
+		SortThread = new SwingWorker() 
+		{
+			@Override
+			public Void doInBackground() throws InterruptedException 
+			{
+				 for (int i = 1; i < Array.length; i++) 
+				 {
+					 Left = i;
+			         int key = Array[i];
+			         int j = i - 1;
+			 
+			         while (j >= 0 && Array[j] > key) 
+			         {
+			        	Right = j;
+			          	Array[j + 1] = Array[j];
+			            j = j - 1;
+
+						Thread.sleep(Sleep);
+						repaint();
+			         }
+			       	 Array[j + 1] = key;
+				 }
 				
 				Left = -1;
 				Right = -1;
